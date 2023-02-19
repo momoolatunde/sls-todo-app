@@ -25,3 +25,7 @@ export async function createTodo(userId: string, createTodoRequest: CreateTodoRe
     return newTodo as TodoItem
 }
 
+export async function getTodos(userId: string): Promise<TodoItem[]>{
+    return todosAccess.getTodos(userId)
+}
+

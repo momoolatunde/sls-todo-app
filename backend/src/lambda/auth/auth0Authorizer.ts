@@ -48,7 +48,8 @@ async function verifyToken(authHeader: string): Promise<JwtPayload> {
   const token = getToken(authHeader)
   const jwt: Jwt = decode(token, { complete: true }) as Jwt
 
-  const { data: { keys } } = await Axios.get(jwksUrl);
+  const result = await Axios.get(jwksUrl)
+  const keys = result.data.keys
 
   const signingKey = keys.find(key => key.kid === jwt.header.kid) 
 
