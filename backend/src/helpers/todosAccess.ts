@@ -37,7 +37,8 @@ export class TodosAccess{
             
         }).promise()
 
-        return result.Items as TodoItem[]
+        const items = result.Items
+        return items as TodoItem[]
     }
 
     async updateTodo(todoId:string, userId:string, todoUpdate:TodoUpdate): Promise<TodoUpdate>{
@@ -75,5 +76,19 @@ export class TodosAccess{
         return todoId
     }
 
+    async uploadFile(userId:string, todoId:string, url: string) {
 
+        await this.docClient.update({
+            TableName: this.todosTable,
+            Key: {
+                userId,
+                todoId
+            },
+            UpdateExpression: 'set attachmentUrl = :attachmentUrl',
+            ExpressionAttributeValues: {
+                ':attachmentUrl': url
+            }
+        }).promise()
+        
+    }
 }

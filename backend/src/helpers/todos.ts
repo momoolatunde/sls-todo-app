@@ -5,8 +5,10 @@ import { TodoItem } from '../models/TodoItem'
 import { TodoUpdate } from '../models/TodoUpdate'
 import { CreateTodoRequest } from '../requests/CreateTodoRequest'
 import { UpdateTodoRequest } from '../requests/UpdateTodoRequest'
+import { AttachmentUtils } from './attachmentUtils'
 
 const todosAccess = new TodosAccess()
+const attachmentUtils = new AttachmentUtils()
 
 export async function createTodo(userId: string, createTodoRequest: CreateTodoRequest): Promise<TodoItem>{
 
@@ -40,4 +42,13 @@ export async function updatedTodo(todoId:string, updateTodoRequest:UpdateTodoReq
 export async function deleteTodo(userId:string, todoId:string): Promise<string> {
 
     return todosAccess.deleteTodo(userId, todoId)
+}
+
+export async function createImagePresignedUrl(userId:string, todoId:string): Promise<string>{
+
+    const attachmentUrl = attachmentUtils.getAttachmentUrl(todoId)
+
+    await todosAccess.uploadFile(userId, todoId, attachmentUrl)
+
+    return attachmentUtils.getUploadUrl(todoId)
 }
