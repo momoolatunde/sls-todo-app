@@ -27,3 +27,7 @@ provider:
 
   logs:
     restApi: true
+
+functions:
+  Auth:
+    handler: src/lambda/auth/auth0Authorizer.handler
