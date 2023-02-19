@@ -28,10 +28,16 @@ export async function createTodo(userId: string, createTodoRequest: CreateTodoRe
 }
 
 export async function getTodos(userId: string): Promise<TodoItem[]>{
+    
     return todosAccess.getTodos(userId)
 }
 
 export async function updatedTodo(todoId:string, updateTodoRequest:UpdateTodoRequest, userId:string): Promise<TodoUpdate> {
 
     return todosAccess.updateTodo(todoId, userId, updateTodoRequest)
+}
+
+export async function deleteTodo(userId:string, todoId:string): Promise<string> {
+
+    return todosAccess.deleteTodo(userId, todoId)
 }
