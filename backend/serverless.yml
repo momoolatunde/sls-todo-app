@@ -25,6 +25,7 @@ provider:
   environment:
     TODOS_TABLE: todos-db-${self:provider.stage}
     TODOS_CREATED_AT_INDEX: todos-created-at-index-${self:provider.stage}
+    TODOS_UPLOAD_S3_BUCKET: ${self:provider.stage}-todos-upload-s3-bucket
 
   logs:
     restApi: true
@@ -84,6 +85,10 @@ functions:
         Action:
           - dynamodb:Query
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}/index/${self:provider.environment.TODOS_CREATED_AT_INDEX}
       - Effect: Allow
         Action:
           - xray:PutTelemetryRecords
@@ -192,3 +197,36 @@ resources:
                 KeyType: RANGE
             Projection:
               ProjectionType: ALL
+
+    TodosUploadS3Bucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        CorsConfiguration:
+          CorsRules:
+            - AllowedHeaders:
+                - "*"
+              AllowedMethods:
+                - GET
+                - PUT
+                - POST
+                - DELETE
+                - HEAD
+              AllowedOrigins:
+                - "*"
+              MaxAge: 3000
+        BucketName: ${self:provider.environment.TODOS_UPLOAD_S3_BUCKET}
+
+    TodosUploadS3BucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        PolicyDocument:
+          Id: MyPolicy
+          Version: "2012-10-17"
+          Statement:
+            - Sid: PublicReadForGetBucketObjects
+              Effect: Allow
+              Principal: "*"
+              Action:
+                - s3:GetObject
+              Resource: "arn:aws:s3:::${self:provider.environment.TODOS_UPLOAD_S3_BUCKET}/*"
+        Bucket: !Ref TodosUploadS3Bucket

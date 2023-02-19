@@ -13,26 +13,11 @@
     "dueDate": {
       "type": "string",
       "description": "Due Date"
-    },
-    "done": {
-      "type": "boolean",
-      "description": "Status"
-    },
-    "attachmentUrl": {
-      "type": "string",
-      "description": "Attachment Url"
-    },
-    "createdAt": {
-      "type": "string",
-      "description": "Created At"
     }
   },
   "required": [
     "name",
-    "dueDate",
-    "done",
-    "attachmentUrl",
-    "createdAt"
+    "dueDate"
   ],
   "additionalProperties": false
 }
