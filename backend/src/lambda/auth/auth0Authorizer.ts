@@ -5,13 +5,19 @@ import Axios from 'axios'
 
 import { Jwt } from '../../auth/Jwt'
 import { JwtPayload } from '../../auth/JwtPayload'
+import { createLogger } from '../../utils/logger'
 
 const jwksUrl = 'https://dev-3ag6nabvb85ne8fo.us.auth0.com/.well-known/jwks.json'
 
+const logger = createLogger('authentication')
+
 
 export const handler = async (event: CustomAuthorizerEvent): Promise<CustomAuthorizerResult> => {
+  
   try {
     const jwtToken = await verifyToken(event.authorizationToken)
+
+    logger.info('user authorized', jwtToken)
 
     return {
       principalId: jwtToken.sub,
@@ -27,6 +33,8 @@ export const handler = async (event: CustomAuthorizerEvent): Promise<CustomAutho
       }
     }
   } catch (e) {
+
+    logger.info('user not authorized', e.message)
 
     return {
       principalId: 'user',
