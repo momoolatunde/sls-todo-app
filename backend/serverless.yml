@@ -1,0 +1,29 @@
+org: feelallejo
+app: serverless-todo-app
+service: sls-todo-app
+
+frameworkVersion: 3.27.0
+
+plugins:
+  - serverless-webpack
+  - serverless-iam-roles-per-function
+  - serverless-plugin-tracing
+  - serverless-aws-documentation
+  - serverless-reqvalidator-plugin
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+
+  stage: ${opt:stage, 'dev'}
+  region: ${opt:region, 'us-east-1'}
+
+  tracing:
+    lambda: true
+    apiGateway: true
+
+  environment:
+    TODOS_TABLE: todos-db-${self:provider.stage}
+
+  logs:
+    restApi: true
