@@ -24,6 +24,7 @@ provider:
 
   environment:
     TODOS_TABLE: todos-db-${self:provider.stage}
+    TODOS_CREATED_AT_INDEX: todos-created-at-index-${self:provider.stage}
 
   logs:
     restApi: true
@@ -183,7 +184,7 @@ resources:
         BillingMode: PAY_PER_REQUEST
         TableName: ${self:provider.environment.TODOS_TABLE}
         LocalSecondaryIndexes:
-          - IndexName: createdAt-index
+          - IndexName: ${self:provider.environment.TODOS_CREATED_AT_INDEX}
             KeySchema:
               - AttributeName: userId
                 KeyType: HASH

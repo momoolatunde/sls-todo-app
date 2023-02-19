@@ -17,11 +17,11 @@ export async function createTodo(userId: string, createTodoRequest: CreateTodoRe
         todoId,
         createdAt: new Date().toISOString(),
         done: false,
-        attachmentUrl: '',
+        attachmentUrl: null,
         ...createTodoRequest
     }
 
-    try { await todosAccess.createTodoItem(newTodo)} 
+    try { await todosAccess.createTodo(newTodo)} 
     catch (error) { console.log('Error creating todo item: ', error)}
     
     return newTodo as TodoItem
