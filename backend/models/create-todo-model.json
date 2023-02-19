@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "group",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Name",
+      "minLength": 2,
+      "maxLength": 200
+
+    },
+    "dueDate": {
+      "type": "string",
+      "description": "Due Date"
+    },
+    "done": {
+      "type": "boolean",
+      "description": "Status"
+    },
+    "attachmentUrl": {
+      "type": "string",
+      "description": "Attachment Url"
+    },
+    "createdAt": {
+      "type": "string",
+      "description": "Created At"
+    }
+  },
+  "required": [
+    "name",
+    "dueDate",
+    "done",
+    "attachmentUrl",
+    "createdAt"
+  ],
+  "additionalProperties": false
+}
